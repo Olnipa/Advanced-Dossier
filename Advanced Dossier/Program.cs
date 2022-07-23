@@ -8,8 +8,8 @@ namespace sorting
         {
             bool isWorking = true;
 
-            List<string> fullNameList = new List<string> { "Петров Михаил Евгеньевич", "Васильев Евгений Иванович", "Дроздов Николай Петрович" };
-            List<string> employeePositionList = new List<string> { "Менеджер", "Сантехник", "Зоолог" };
+            List<string> fullNames = new List<string> { "Петров Михаил Евгеньевич", "Васильев Евгений Иванович", "Дроздов Николай Петрович" };
+            List<string> positions = new List<string> { "Менеджер", "Сантехник", "Зоолог" };
 
             while (isWorking)
             {
@@ -20,13 +20,13 @@ namespace sorting
                 switch (choosenMenu.Key)
                 {
                     case ConsoleKey.D1:
-                        AddDossier(ref fullNameList, ref employeePositionList);
+                        AddDossier(fullNames, positions);
                         break;
                     case ConsoleKey.D2:
-                        WriteList(fullNameList, employeePositionList, fullNameList.Count);
+                        WriteList(fullNames, positions);
                         break;
                     case ConsoleKey.D3:
-                        DeleteDossier(ref fullNameList, ref employeePositionList);
+                        DeleteDossier(fullNames, positions);
                         break;
                     case ConsoleKey.D0:
                         isWorking = false;
@@ -39,7 +39,7 @@ namespace sorting
             }
         }
 
-        static void DeleteDossier(ref List<string> fullNameList, ref List<string> employeePositionList)
+        static void DeleteDossier(List<string> fullNames, List<string> positions)
         {
             int dossierForDelete;
             Console.Write("Укажите номер досье, которое необходимо удалить: ");
@@ -48,58 +48,53 @@ namespace sorting
             {
                 int indexForDelete = dossierForDelete - 1;
 
-                if (indexForDelete >= 0 && indexForDelete < fullNameList.Count)
+                if (indexForDelete >= 0 && indexForDelete < fullNames.Count)
                 {
                     Console.Write("\nВы пытаетесь удалить досье №");
-
-                    WriteList(fullNameList, employeePositionList, indexForDelete + 1, indexForDelete, "\n1 - Подтвердить удаление. Любая другая клавиша - Отменить удаление.");
-                    
+                    Console.WriteLine($"{indexForDelete + 1}. {fullNames[indexForDelete]} - {positions[indexForDelete]}");
+                    WriteSystemMessage("1 - Подтвердить удаление. Любая другая клавиша - Отменить удаление.");
                     ConsoleKeyInfo choosenConfirmationMenu = Console.ReadKey(true);
 
                     switch (choosenConfirmationMenu.Key)
                     {
                         case ConsoleKey.D1:
-                            fullNameList.RemoveAt(indexForDelete);
-                            employeePositionList.RemoveAt(indexForDelete);
-
-                            ChangeColor("Данные успешно удалены. Для продолжения нажмите любую клавишу...", ConsoleColor.Green);
-                            
+                            fullNames.RemoveAt(indexForDelete);
+                            positions.RemoveAt(indexForDelete);
+                            WriteSystemMessage("Данные успешно удалены. Для продолжения нажмите любую клавишу...", ConsoleColor.Green);
                             Console.ReadKey(true);
                             break;
                         default:
-                            ChangeColor("Удаление отменено.");
+                            WriteSystemMessage("Удаление отменено.");
                             break;
                     }
                 }
                 else
                 {
-                    ChangeColor("Такого досье не найдено.");
+                    WriteSystemMessage("Такого досье не найдено.");
                 }
             }
             else
             {
-                ChangeColor("Введенное значение не является числом");
+                WriteSystemMessage("Введенное значение не является числом");
             }
         }
 
-        static void AddDossier(ref List<string> fullNameList, ref List<string> employeePositionList)
+        static void AddDossier(List<string> fullNames, List<string> positions)
         {
             string fullName = ReadText("Введите Фамилию, Имя и Отчество последовательно, через пробел: ");
             string employeePosition = ReadText("Введите должность: ");
 
-            fullNameList.Add(fullName);
-            employeePositionList.Add(employeePosition);
-
-            ChangeColor("Данные успешно внесены. Для продолжения нажмите любую клавишу...", ConsoleColor.Green);
-
+            fullNames.Add(fullName);
+            positions.Add(employeePosition);
+            WriteSystemMessage("Данные успешно внесены. Для продолжения нажмите любую клавишу...", ConsoleColor.Green);
             Console.ReadKey(true);
         }
 
-        static void ChangeColor(string error, ConsoleColor color = ConsoleColor.Red)
+        static void WriteSystemMessage(string text, ConsoleColor color = ConsoleColor.Red)
         {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
-            Console.WriteLine(error);
+            Console.WriteLine(text);
             Console.ForegroundColor = defaultColor;
         }
 
@@ -115,28 +110,24 @@ namespace sorting
 
                 if (value.Length < minValueLenght)
                 {
-                    ChangeColor("Пожалуйста, введите данные без сокращений.");
+                    WriteSystemMessage("Пожалуйста, введите данные без сокращений.");
                 }
             }
 
             return value;
         }
 
-        static void WriteList(List<string> fullNameList, List<string> employeePositionList, int maxCycles, int x = 0, string text = "\nДля продолжения нажмите любую клавишу...")
+        static void WriteList(List<string> fullNames, List<string> positions, string text = "\nДля продолжения нажмите любую клавишу...")
         {
-            for (int i = x; i < maxCycles; i++)
+            for (int i = 0; i < positions.Count; i++)
             {
                 Console.Write(i + 1 + ". ");
-                Console.Write(fullNameList[i]);
-                Console.WriteLine(" - " + employeePositionList[i]);
+                Console.Write(fullNames[i]);
+                Console.WriteLine(" - " + positions[i]);
             }
 
             Console.WriteLine(text);
-
-            if (text == "\nДля продолжения нажмите любую клавишу...")
-            {
-                Console.ReadKey(true);
-            }
+            Console.ReadKey(true);
         }
     }
 }
