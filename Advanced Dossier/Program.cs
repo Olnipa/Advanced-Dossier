@@ -51,7 +51,7 @@ namespace sorting
                 if (indexForDelete >= 0 && indexForDelete < fullNames.Count)
                 {
                     Console.Write("\nВы пытаетесь удалить досье №");
-                    Console.WriteLine($"{indexForDelete + 1}. {fullNames[indexForDelete]} - {positions[indexForDelete]}");
+                    WriteDossier(indexForDelete, fullNames[indexForDelete], positions[indexForDelete]);
                     WriteSystemMessage("1 - Подтвердить удаление. Любая другая клавиша - Отменить удаление.");
                     ConsoleKeyInfo choosenConfirmationMenu = Console.ReadKey(true);
 
@@ -77,6 +77,11 @@ namespace sorting
             {
                 WriteSystemMessage("Введенное значение не является числом");
             }
+        }
+
+        static void WriteDossier(int index, string fullName, string position)
+        {
+            Console.WriteLine($"{index + 1}. {fullName} - {position}");
         }
 
         static void AddDossier(List<string> fullNames, List<string> positions)
@@ -121,9 +126,7 @@ namespace sorting
         {
             for (int i = 0; i < positions.Count; i++)
             {
-                Console.Write(i + 1 + ". ");
-                Console.Write(fullNames[i]);
-                Console.WriteLine(" - " + positions[i]);
+                WriteDossier(i, fullNames[i], positions[i]);
             }
 
             Console.WriteLine(text);
