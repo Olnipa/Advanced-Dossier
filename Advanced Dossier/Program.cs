@@ -6,8 +6,9 @@ namespace sorting
     {
         static void Main(string[] args)
         {
-            List<string> fullNameList = new List<string> { "Петров Михаил Евгеньевич", "Васильев Евгений Иванович", "Дроздов Николай Петрович" };
             bool isWorking = true;
+
+            List<string> fullNameList = new List<string> { "Петров Михаил Евгеньевич", "Васильев Евгений Иванович", "Дроздов Николай Петрович" };
             List<string> employeePositionList = new List<string> { "Менеджер", "Сантехник", "Зоолог" };
 
             while (isWorking)
@@ -50,7 +51,9 @@ namespace sorting
                 if (indexForDelete >= 0 && indexForDelete < fullNameList.Count)
                 {
                     Console.Write("\nВы пытаетесь удалить досье №");
+
                     WriteList(fullNameList, employeePositionList, indexForDelete + 1, indexForDelete, "\n1 - Подтвердить удаление. Любая другая клавиша - Отменить удаление.");
+                    
                     ConsoleKeyInfo choosenConfirmationMenu = Console.ReadKey(true);
 
                     switch (choosenConfirmationMenu.Key)
@@ -60,6 +63,7 @@ namespace sorting
                             employeePositionList.RemoveAt(indexForDelete);
 
                             ChangeColor("Данные успешно удалены. Для продолжения нажмите любую клавишу...", ConsoleColor.Green);
+                            
                             Console.ReadKey(true);
                             break;
                         default:
@@ -80,11 +84,8 @@ namespace sorting
 
         static void AddDossier(ref List<string> fullNameList, ref List<string> employeePositionList)
         {
-            string fullName = "";
-            string employeePosition = "";
-
-            fullName = ReadText("Введите Фамилию, Имя и Отчество последовательно, через пробел: ");
-            employeePosition = ReadText("Введите должность: ");
+            string fullName = ReadText("Введите Фамилию, Имя и Отчество последовательно, через пробел: ");
+            string employeePosition = ReadText("Введите должность: ");
 
             fullNameList.Add(fullName);
             employeePositionList.Add(employeePosition);
